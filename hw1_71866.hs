@@ -29,9 +29,9 @@ solveQuadratic a b c  = if d < 0 then error "0" else (x1, x2)
 -- cheching the value of discriminant, if there is solution in R
  where
 -- calculating roots
-  x1 = (- b + sqrt d ) / 2 * a
-  x2 = (- b - sqrt d ) / 2 * a
-  d = b * b - 4 * a * c
+  x1 = (- b + sqrt d ) / (2 * a)
+  x2 = (- b - sqrt d ) / (2 * a)
+  d  = (b * b)- (4 * a * c)
   
 -------------------------------------------
  -- 2 задача 
@@ -45,19 +45,19 @@ sumPrimes n k
  -- 3 задача
 -------------------------------------------
 -- checking if the given number is a palindrome f.e. 123321 is a palindrome, but 1345 is not a palindrome
-isPalindrome::Integer -> Bool
+isPalindrome::Int -> Bool
 isPalindrome number = number == reversedNumber number
 -- check if the number is equal to its reversed
 -- 12321 - reversed...12321 
-reversedNumber :: Integer -> Integer
+reversedNumber :: Int -> Int
 reversedNumber number = helper number 0
  where 
  helper rest acc
   | rest < 10 = rest + acc * 10
   | otherwise = helper (rest `div` 10) ((rest `mod` 10) + acc * 10)
 
-countPalindromes :: Integer -> Integer -> Integer
-countPalindromes a b = fromIntegral(length[x | x <- [a..b], isPalindrome x]) -- given interval
+countPalindromes :: Int -> Int -> Int
+countPalindromes a b = length[x | x <- [a..b], isPalindrome x] -- given interval
 
 -------------------------------------------
 --4 задача 
@@ -66,7 +66,7 @@ countPalindromes a b = fromIntegral(length[x | x <- [a..b], isPalindrome x]) -- 
 truncatablePrime :: Integer -> Bool
 truncatablePrime number 
  | number == 0              = True
- | isPrime number == False  = False -- using the function isPrime 
- | otherwise           = True && (truncatablePrime (div number 10)) 
+ | not(isPrime number)      = False -- using the function isPrime 
+ | otherwise                = True && (truncatablePrime (div number 10)) 
 
  

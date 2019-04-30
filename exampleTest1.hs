@@ -10,13 +10,14 @@ main = do
  print (isProgression [2,4,6])
  print (progressions [[2,4,6],[2,2,4]])
  print (progressions [[2,2,4]])
- print("tralalla")
+ print ("tralalla")
  print (reversedMaxSuf 563428)
  print (sumUnique [[1,2,3,2],[-4,-4],[5]])
  print (isSpecial 91)
  print (isSpecial 81)
  print (getSpecials 2 100)
  print (specials 1  100)
+ print (isPerfect 8)
 
 
 --squares
@@ -41,7 +42,7 @@ main = do
 
 --task 01
 sumDigits :: Integer -> Integer
-sumDigits 0 = 0
+sumDigits n = 0
 sumDigits n = mod n 10 + sumDigits(div n 10)
 
 isInteresting :: Integer -> Bool
@@ -72,7 +73,7 @@ reversedMaxSuf :: Int -> Int
 reversedMaxSuf n = helper n 0
  where 
    helper number result = 
-    if mod result 10 >= mod number  10 then result
+    if mod result 10 >= mod number 10 then result
     else helper (div number  10) (result * 10 + mod number 10)
 
 --task 08
@@ -125,11 +126,8 @@ isPrime n  = (length[x | x <- [2..n-1], (mod n x) == 0]) == 0
 
 --isPerfect
 isPerfect :: Integer -> Bool
-isPerfect n = n == sumDigits [x | x <- [1..n - 1], n `mod` x == 0]
- where
-  sumDigits :: [Integer] -> Integer
-  sumDigits []     = 0                 
-  sumDigits (x:xs) = x + sumDigits xs  
+isPerfect n = n == sum[x | x <- [1..n - 1], n `mod` x == 0]
+
  
  --primes in range
 primesInRange :: Integer -> Integer -> [Integer]
