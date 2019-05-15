@@ -44,7 +44,7 @@ replaceAssoc :: [Int] -> [(Int,Int)] -> [Int]
 replaceAssoc []_ = []                                     -- Bottom
 replaceAssoc list [] = list                               
 replaceAssoc (x:list) dict = helper : (replaceAssoc list dict)          -- using helper to check the keys
- where helper =  if (length [q | (p, q) <- dict, p == x] == 0) then x   -- cheching if there is any element with key(p) == x,- True - return x, 
+ where helper =  if (length [q | (p, q) <- dict, p == x] == 0) then x   -- checking if there is any element with key(p) == x,- True - return x, 
                  else (headOf [q | (p, q) <- dict, p == x])                                                              --  - False - return the element
                           
 --------------------------------------------------------------------------
