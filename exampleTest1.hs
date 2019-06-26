@@ -291,4 +291,25 @@ countEdges graph = sum (map sum graph)
 leafsOfMatrix :: [[Int]] -> [Int]
 leafsOfMatrix xss = [ind | (ind, edgesCount) <- zip [0..] (map sum xss), edgesCount == 0]
 
+
+matrix :: [[Int]] -> Int
+matrix lst = helper 1 0
+ where 
+  helper :: Int -> Int -> Int
+  helper i sum
+   | i > (length lst)      = sum
+   | otherwise = helper (i + 1) (sum + max (maximum t1) (maximum t2))
+    where
+     t1 = listRow lst i
+     t2 = listCol lst i
+
+-- Get the row   
+listRow :: [[Int]] -> Int -> [Int]
+listRow (x:xs) 1 = x
+listRow (x:xs) i = listRow xs (i - 1)
+
+--Get the col
+listCol :: [[Int]] -> Int -> [Int]
+listCol [] _ = []
+listCol (x:xs) j = (x!!(j - 1)) : listCol xs j
  
