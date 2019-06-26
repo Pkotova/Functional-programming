@@ -3,8 +3,8 @@ import Data.Char
 main :: IO()
 main = do
 
- print (sumDigits 410)
- print (isInteresting 410)
+ --print (sumDigits 410)
+ --print (isInteresting 410)
  print (containsSix 12554)
  print (sumNumbers 60 70)
  print (isProgression [2,4,6])
@@ -32,22 +32,19 @@ main = do
 --chunks of list into n-elements lists
 --normalize to capital
 -- make upper, makeLower, isCapital, isNumber
--- prodDivSum
+--prodDivSum
 -- mygcd
 --reverse number 
 --isSpecial
 
-
-
-
---task 01
+{--task 01
 sumDigits :: Integer -> Integer
 sumDigits n = 0
 sumDigits n = mod n 10 + sumDigits(div n 10)
 
 isInteresting :: Integer -> Bool
 isInteresting n = mod n (sumDigits n) == 0
-
+-}
 --task 02
 containsSix :: Integer -> Bool
 containsSix 0 = False
@@ -85,9 +82,7 @@ getUnique [] = []
 getUnique (x:xs)
  | elem x xs = getUnique [y | y <- xs, x /= y]
  | otherwise = x : getUnique xs
- 
- 
- 
+
 --more tasks 
 
 --squares
@@ -192,7 +187,7 @@ isSpecial result = isPrime(reverseNumber result)
 
 special :: Integer -> Bool
 special 1 = False
-special result = isPrime(sumDigits result)
+--special result = isPrime(sumDigits result)
 
 specials :: Integer -> Integer ->[Integer]
 specials a b = [x | x<-[a..b], special x]
@@ -200,5 +195,100 @@ specials a b = [x | x<-[a..b], special x]
 getSpecials :: Integer ->Integer ->[Integer]
 getSpecials a b = [x | x<-[a..b], isSpecial x]
  
- 
+ -- Задача 1. Да се дефинира функция coPrime, която проверява
+-- дали две числа са взаимно прости.
+coPrime :: Int -> Int -> Bool
+coPrime a b = length[ p | p <- [2..b], (mod a p == 0) && (mod b p == 0)] == 0 
+
+-- (coPrime 2 3) -> True
+-- (coPrime 10 15) -> False
+
+-- Задача 2. Да се напише функция phiN, която пресмята
+-- функцията на Ойлер за подадено естествено число.
+-- Функцията (phiN n) е дефинирана по следния начин:
+-- phiN 1 = 1
+-- phiN n = броят на числата по-малки от n и взаимно прости с n
+
+phiN :: Int -> [Int]
+phiN 1 = [1]
+phiN n = [ s | s <- [1..n-1], (coPrime s n)]
+
+-- (phiN 2) -> 1
+-- (phiN 3) -> 2
+-- (phiN 16) -> 8
+
+-- Задача 3. Да се напише функция findSum, която приема
+-- като аргумент квадратна числова матрица matrix
+-- с размери NxN и връща сумата от числата 𝑥𝑖,
+-- където 𝑥𝑖 е максималното измежду всички числа
+-- в i-тия ред и i-тия стълб на matrix, i се изменя от 1 до n.
+
+--findSum :: [[Int]] -> Int
+-- (findSum [[1, 2, 3], [4, 5, 6], [7, 8, 9]]) -> 24
+-- (findSum [[7, 4, 2, 0], [0, 1, 12, 31], [0, 9, 1, 0], [-3, 7, -5, 12]]) -> 81
+
+-- k devisors
+isPrime' :: Int -> Bool
+isPrime' 1 = False
+isPrime' n = length[ x | x <- [2..n - 1], mod n x == 0] == 0
+
+findPrimeDevisors :: Int -> Int
+findPrimeDevisors n = length[ x | x <- [1..n], (mod n x) == 0 && isPrime' x]
+
+kDevisors :: Int -> Int -> Int
+kDevisors n k = length[ x | x <- [1..n], findPrimeDevisors x == k]
+
+{-
+  Зад. 1. Да се напише функция, която намира сбора на две матрици, представени
+  като списък от списъци.
+-}
+
+addMatrices :: (Num a, Eq a) => [[a]] -> [[a]] -> [[a]]
+addMatrices [] [] = []
+addMatrices (m:ms1) (n:ms2) = zipWith (+) m n : addMatrices ms1 ms2
+
+{-
+  Зад. 2. Да се напише функция, която нулира всички сълбове на матрица, в които
+  се съдържа стойност 0. Матрицата е представена като списък от списъци.
+-}
+
+cleanCol :: (Num a, Eq a) => [a] -> [a]
+cleanCol xs = if elem 0 xs then map (*0) xs else xs
+
+nullify :: (Num a, Eq a) => [[a]] -> [[a]]
+nullify matrix@([]:_) = matrix
+nullify matrix = zipWith (\ x xs -> x:xs) (cleanCol (map head matrix)) (nullify (map tail matrix))
+
+{-
+  Зад. 3. Напишете функция която намира транспонираната на дадена матрица.
+-}
+
+myTranspose :: [[Int]] -> [[Int]]
+myTranspose [] = []
+myTranspose ([] : xss) = myTranspose xss
+myTranspose ((x:xs) : xss) = (x : [h | (h:_) <- xss]) : myTranspose (xs : [ t | (_:t) <- xss]) 
+
+{-
+  Зад. 4. Напишете функция, която намира произведението на две матрици.
+-}
+
+--multMat :: Num a => [[a]] -> [[a]] -> [[a]]
+--multMat xss yss = [[sum (zipWith (*) xs ys) | ys <- (transpose yss)] | xs <- xss]
+
+{-
+  Зад. 5. Напишете функция, която намира броя на дъгите на граф, представен
+  чрез матрица на съседство.
+-}
+
+countEdges :: [[Int]] -> Int
+countEdges graph = sum (map sum graph)
+
+{-
+  Зад. 6. Напишете функция, която намира всички листа на дърво, представено
+  чрез матрица на съседство.
+-}
+
+leafsOfMatrix :: [[Int]] -> [Int]
+leafsOfMatrix xss = [ind | (ind, edgesCount) <- zip [0..] (map sum xss), edgesCount == 0]
+
  
